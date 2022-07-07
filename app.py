@@ -2,6 +2,7 @@ import json
 import os
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import desc
 from models import db, Starter, Main_Dish, Salad, Dessert
 from flask_cors import CORS
 from flask_migrate import Migrate
@@ -67,7 +68,7 @@ def edit_main(id):
     edit.name = request.json.get("name")
     edit.description = request.json.get("description")
     db.session.commit()
-    return jsonify(edit.serialize(), '¡El plato de fondo seleccionado ha sido actualizada!')
+    return jsonify(edit.serialize(), '¡El plato de fondo seleccionado ha sido actualizado!')
 
 @app.route ('/main/<int:id>', methods=['DELETE'])
 def delete_main(id):
@@ -77,6 +78,64 @@ def delete_main(id):
     return jsonify('Plato de fondo eliminado exitosamente')
 
 #CRUD SALAD
+@app.route ('/salad', methods=['POST'])
+def new_salad():
+    salad= Salad()
+    salad.name = request.json.get("name")
+    salad.description = request.json.get("description")
+    db.session.add(salad)
+    db.session.commit()
+    return jsonify(salad.serialize()), 200
+
+@app.route ('/salad/<int:id>', methods=['GET'])
+def get_salad (id):
+    option = Salad.query.get(id)
+    return jsonify(option.serialize()), 200
+
+@app.route ('/salad/<int:id>', methods=['PUT'])
+def edit_salad(id):
+    edit = Salad.query.get(id)
+    edit.name = request.json.get("name")
+    edit.description = request.json.get("description")
+    db.session.commit()
+    return jsonify(edit.serialize(), '¡La ensalada seleccionada ha sido actualizada!')
+
+@app.route ('/salad/<int:id>', methods=['DELETE'])
+def delete_salad(id):
+    salad= Salad.query.get(id)
+    db.session.delete(salad)
+    db.session.commit()
+    return jsonify('La ensalada fue eliminada exitosamente')
+
+#CRUD DESSERT
+@app.route ('/dessert', methods=['POST'])
+def new_dessert():
+    dessert= Dessert()
+    dessert.name = request.json.get("name")
+    dessert.description = request.json.get("description")
+    db.session.add(dessert)
+    db.session.commit()
+    return jsonify(dessert.serialize()), 200
+
+@app.route ('/dessert/<int:id>', methods=['GET'])
+def get_dessert (id):
+    option = Dessert.query.get(id)
+    return jsonify(option.serialize()), 200
+
+@app.route ('/dessert/<int:id>', methods=['PUT'])
+def edit_dessert(id):
+    edit = Dessert.query.get(id)
+    edit.name = request.json.get("name")
+    edit.description = request.json.get("description")
+    db.session.commit()
+    return jsonify(edit.serialize(), '¡El postre seleccionado ha sido actualizado!')
+
+@app.route ('/dessert/<int:id>', methods=['DELETE'])
+def delete_dessert(id):
+    dessert= Dessert.query.get(id)
+    db.session.delete(dessert)
+    db.session.commit()
+    return jsonify('El postre fue eliminado exitosamente')
 
 
 
