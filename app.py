@@ -20,13 +20,16 @@ app.config['DEBUG'] = True
 #CRUD STARTER
 @app.route ('/starter', methods=['POST'])
 def new_starter():
-    starter= Starter()
-    starter.name = request.json.get("name")
-    starter.description = request.json.get("description")
-    db.session.add(starter)
-    db.session.commit()
-    return jsonify(starter.serialize()), 200
-
+    if request.json.get("name") != "" and request.json.get("description") != "":
+        starter= Starter()
+        starter.name = request.json.get("name")
+        starter.description = request.json.get("description")
+        db.session.add(starter)
+        db.session.commit()
+        return jsonify(starter.serialize()), 200
+    else:
+        return jsonify("Tus datos no pueden estar vacíos")
+    
 @app.route ('/starter/<int:id>', methods=['GET'])
 def get_starter(id):
     option = Starter.query.get(id)
