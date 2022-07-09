@@ -28,7 +28,7 @@ def new_starter():
         db.session.commit()
         return jsonify(starter.serialize()), 200
     else:
-        return jsonify("Tus datos no pueden estar vacíos")
+        return jsonify("Este campo no puede estar vacío")
     
 @app.route ('/starter/<int:id>', methods=['GET'])
 def get_starter(id):
@@ -53,12 +53,15 @@ def delete_starter(id):
 #CRUD MAIN_DISH
 @app.route ('/main', methods=['POST'])
 def new_main():
-    main= Main_Dish()
-    main.name = request.json.get("name")
-    main.description = request.json.get("description")
-    db.session.add(main)
-    db.session.commit()
-    return jsonify(main.serialize()), 200
+    if request.json.get("name") != "" and request.json.get("description") != "":
+        main= Main_Dish()
+        main.name = request.json.get("name")
+        main.description = request.json.get("description")
+        db.session.add(main)
+        db.session.commit()
+        return jsonify(main.serialize()), 200
+    else:
+        return jsonify("Este campo no puede estar vacío")
 
 @app.route ('/main/<int:id>', methods=['GET'])
 def get_main(id):
@@ -83,12 +86,15 @@ def delete_main(id):
 #CRUD SALAD
 @app.route ('/salad', methods=['POST'])
 def new_salad():
-    salad= Salad()
-    salad.name = request.json.get("name")
-    salad.description = request.json.get("description")
-    db.session.add(salad)
-    db.session.commit()
-    return jsonify(salad.serialize()), 200
+    if request.json.get("name") != "" and request.json.get("description") != "":
+        salad= Salad()
+        salad.name = request.json.get("name")
+        salad.description = request.json.get("description")
+        db.session.add(salad)
+        db.session.commit()
+        return jsonify(salad.serialize()), 200
+    else:
+        return jsonify("Este campo no puede estar vacío")    
 
 @app.route ('/salad/<int:id>', methods=['GET'])
 def get_salad (id):
@@ -113,12 +119,15 @@ def delete_salad(id):
 #CRUD DESSERT
 @app.route ('/dessert', methods=['POST'])
 def new_dessert():
-    dessert= Dessert()
-    dessert.name = request.json.get("name")
-    dessert.description = request.json.get("description")
-    db.session.add(dessert)
-    db.session.commit()
-    return jsonify(dessert.serialize()), 200
+    if request.json.get("name") != "" and request.json.get("description") != "":
+        dessert= Dessert()
+        dessert.name = request.json.get("name")
+        dessert.description = request.json.get("description")
+        db.session.add(dessert)
+        db.session.commit()
+        return jsonify(dessert.serialize()), 200
+    else:
+        return jsonify("Este campo no puede estar vacío")
 
 @app.route ('/dessert/<int:id>', methods=['GET'])
 def get_dessert (id):
