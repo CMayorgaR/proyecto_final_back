@@ -1,9 +1,10 @@
+from crypt import methods
 import json
 import os
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
-from models import db, Starter, Main_Dish, Salad, Dessert
+from models import db, Starter, Main_Dish, Salad, Dessert, User, Roles
 from flask_cors import CORS
 from flask_migrate import Migrate
 
@@ -16,6 +17,25 @@ Migrate (app, db)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join(BASEDIR, "test.db") #Dirección provisoria de la base de datos
 app.config['DEBUG'] = True
+
+#CRUD USER
+@app.route ('/', methods=["GET"])
+def home():
+    return 'Hello flask apiiiiii'
+
+@app.route ('/create_user', methods=["POST"])
+def create_user():
+    user = User()
+    user.full_name = request.json.get("full_name")
+    user.email = request.json.get("email")
+    user.password = request.json.get("password")
+
+    db.session.add(user)
+    db.session.commit()
+
+    return jsonify('user created'), 200
+
+
 
 #CRUD STARTER
 @app.route ('/starter', methods=['POST'])
