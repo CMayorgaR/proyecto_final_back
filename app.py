@@ -81,10 +81,16 @@ def new_starter():
     else:
         return jsonify("Este campo no puede estar vacío")
     
-@app.route ('/starter/<int:id>', methods=['GET'])
+@app.route ('/starter/<int:id>', methods=['GET']) #One Starter
 def get_starter(id):
     option = Starter.query.get(id)
     return jsonify(option.serialize()), 200
+
+@app.route ('/starter', methods = ['GET']) #All starters
+def all_starters():
+    starters= Starter.query.all()
+    starters= list(map(lambda x: x.serialize(), starters))
+    return jsonify(starters), 200
 
 @app.route ('/starter/<int:id>', methods=['PUT'])
 def edit_starter(id):
@@ -114,10 +120,16 @@ def new_main():
     else:
         return jsonify("Este campo no puede estar vacío")
 
-@app.route ('/main/<int:id>', methods=['GET'])
+@app.route ('/main/<int:id>', methods=['GET']) #One Main_Dish
 def get_main(id):
     option = Main_Dish.query.get(id)
     return jsonify(option.serialize()), 200
+
+@app.route ('/main', methods = ['GET']) #All Main_Dishes
+def all_main():
+    mains = Main_Dish.query.all()
+    mains= list(map(lambda x: x.serialize(), mains))
+    return jsonify(mains), 200
 
 @app.route ('/main/<int:id>', methods=['PUT'])
 def edit_main(id):
@@ -147,10 +159,16 @@ def new_salad():
     else:
         return jsonify("Este campo no puede estar vacío")    
 
-@app.route ('/salad/<int:id>', methods=['GET'])
+@app.route ('/salad/<int:id>', methods=['GET']) #One Salad
 def get_salad (id):
     option = Salad.query.get(id)
     return jsonify(option.serialize()), 200
+
+@app.route ('/salad', methods = ['GET']) #All salads
+def all_salads():
+    salads = Salad.query.all()
+    salads = list(map(lambda x: x.serialize(), salads))
+    return jsonify(salads), 200
 
 @app.route ('/salad/<int:id>', methods=['PUT'])
 def edit_salad(id):
@@ -180,10 +198,16 @@ def new_dessert():
     else:
         return jsonify("Este campo no puede estar vacío")
 
-@app.route ('/dessert/<int:id>', methods=['GET'])
+@app.route ('/dessert/<int:id>', methods=['GET']) #One dessert
 def get_dessert (id):
     option = Dessert.query.get(id)
     return jsonify(option.serialize()), 200
+
+@app.route ('/dessert', methods = ['GET']) #All desserts
+def all_desserts():
+    desserts = Dessert.query.all()
+    desserts = list(map(lambda x: x.serialize(), desserts))
+    return jsonify(desserts), 200
 
 @app.route ('/dessert/<int:id>', methods=['PUT'])
 def edit_dessert(id):
