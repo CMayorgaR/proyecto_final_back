@@ -35,7 +35,7 @@ def get_starter(id):
     option = Starter.query.get(id)
     return jsonify(option.serialize()), 200
 
-@app.route ('/starters', methods = ['GET']) #All starters
+@app.route ('/starter', methods = ['GET']) #All starters
 def all_starters():
     starters= Starter.query.all()
     starters= list(map(lambda x: x.serialize(), starters))
@@ -74,7 +74,7 @@ def get_main(id):
     option = Main_Dish.query.get(id)
     return jsonify(option.serialize()), 200
 
-@app.route ('/mains', methods = ['GET']) #All Main_Dishes
+@app.route ('/main', methods = ['GET']) #All Main_Dishes
 def all_main():
     mains = Main_Dish.query.all()
     mains= list(map(lambda x: x.serialize(), mains))
@@ -113,7 +113,7 @@ def get_salad (id):
     option = Salad.query.get(id)
     return jsonify(option.serialize()), 200
 
-@app.route ('/salads', methods = ['GET']) #All salads
+@app.route ('/salad', methods = ['GET']) #All salads
 def all_salads():
     salads = Salad.query.all()
     salads = list(map(lambda x: x.serialize(), salads))
@@ -152,7 +152,7 @@ def get_dessert (id):
     option = Dessert.query.get(id)
     return jsonify(option.serialize()), 200
 
-@app.route ('/desserts', methods = ['GET']) #All desserts
+@app.route ('/dessert', methods = ['GET']) #All desserts
 def all_desserts():
     desserts = Dessert.query.all()
     desserts = list(map(lambda x: x.serialize(), desserts))
