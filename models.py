@@ -20,9 +20,9 @@ class Roles(db.Model):
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    full_name = db.Column(db.String(50), nullable=False)
+    full_name = db.Column(db.String(50))
     email = db.Column(db.String(50), nullable=False, unique=True)
-    password = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(200), nullable=False)
     roles_id =db.Column(db.Integer)
 
     def __repr__(self):

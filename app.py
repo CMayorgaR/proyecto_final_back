@@ -1,41 +1,72 @@
 from crypt import methods
+import email
 import json
 import os
+import re
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 from models import db, Starter, Main_Dish, Salad, Dessert, User, Roles
 from flask_cors import CORS
 from flask_migrate import Migrate
+from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
+
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 app = Flask (__name__)
 db.init_app(app)
 CORS(app)
 Migrate (app, db)
+jwt = JWTManager(app)
+bcrypt = Bcrypt(app)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join(BASEDIR, "test.db") #Dirección provisoria de la base de datos
 app.config['DEBUG'] = True
+app.config['SECRET_KEY'] = 'super-secreta'
+app.config['JWT_SECRET_KEY'] = 'mas-secreta-aun'
 
 #CRUD USER
 @app.route ('/', methods=["GET"])
 def home():
     return 'Hello flask apiiiiii'
 
+email_reg = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+password_reg = "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+
 @app.route ('/create_user', methods=["POST"])
 def create_user():
-    user = User()
-    user.full_name = request.json.get("full_name")
-    user.email = request.json.get("email")
-    user.password = request.json.get("password")
+    email = request.json.get("email")
+    password = request.json.get("password")
+    if email != '' and re.search(email_reg, email):
+        user = User.query.filter_by(email=email).first()
+        if user is not None:
+            return jsonify({
+                "msg":'User already exist'
+            }),400
+        else:
+            if password != '' and re.search(password_reg, password):
+                user = User()
+                user.email = email
+                password_hash = bcrypt.generate_password_hash(password)
+                user.password = password_hash
+                user.full_name = request.json.get("full_name")
 
-    db.session.add(user)
-    db.session.commit()
+                db.session.add(user)
+                db.session.commit()
 
-    return jsonify('user created'), 200
-
-
+                return jsonify({
+                    "msg": "success user created"
+                }), 200
+            else:
+                return jsonify({
+                    "msg": 'Wrong password format'
+                }), 400
+    else:
+        return jsonify({
+                    "msg": 'Wrong email format'
+                }), 400
 
 #CRUD STARTER
 @app.route ('/starter', methods=['POST'])
@@ -69,7 +100,7 @@ def delete_starter(id):
     db.session.delete(starter)
     db.session.commit()
     return jsonify('Entrada eliminada exitosamente')
- 
+
 #CRUD MAIN_DISH
 @app.route ('/main', methods=['POST'])
 def new_main():
@@ -172,4 +203,4 @@ def delete_dessert(id):
 
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=8000)
+    app.run(host='localhost', port=8080)
