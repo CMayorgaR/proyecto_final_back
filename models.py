@@ -1,6 +1,8 @@
+from codecs import backslashreplace_errors
 import email
 from enum import unique
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import ForeignKey
 
 db = SQLAlchemy()
 
@@ -42,6 +44,7 @@ class Starter(db.Model):
     id = db.Column (db.Integer, primary_key=True)
     name = db.Column (db.String(100), nullable= False)
     description = db.Column (db.String(300), nullable= False)
+    #selection_id = db.Column (db.Integer, db.ForeignKey('selection.id'), nullable=False)
 
     def __repr__(self):
         return "<Starter %r>" % self.starter_name
@@ -57,6 +60,7 @@ class Main_Dish(db.Model):
     id = db.Column (db.Integer, primary_key=True)
     name = db.Column (db.String(100), nullable= False)
     description = db.Column (db.String(300), nullable= False)
+    #selection_id = db.Column (db.Integer, db.ForeignKey('selection.id'), nullable=False)
 
     def __repr__(self):
         return "<Main_Dish %r>" % self.name
@@ -72,6 +76,7 @@ class Salad(db.Model):
     id = db.Column (db.Integer, primary_key=True)
     name = db.Column (db.String(100), nullable= False)
     description = db.Column (db.String(300), nullable= False)
+    #selection_id = db.Column (db.Integer, db.ForeignKey('selection.id'), nullable=False)
 
     def __repr__(self):
         return "<Salad %r>" % self.name
@@ -87,6 +92,7 @@ class Dessert(db.Model):
     id = db.Column (db.Integer, primary_key=True)
     name = db.Column (db.String(100), nullable= False)
     description = db.Column (db.String(300), nullable= False)
+    #selection_id = db.Column (db.Integer, db.ForeignKey('selection.id'), nullable=False)
 
     def __repr__(self):
         return "<Dessert %r>" % self.name
@@ -98,5 +104,23 @@ class Dessert(db.Model):
             "description": self.description
         }
     
-#class Menu_Option(db.Model):
-    #id = db.Column (db.Integer, primary_key=True)
+#class Selection(db.Model):
+#    id = db.Column (db.Integer, primary_key=True)
+#    date = db.Column (db.DateTime)
+#    starter= db.relationship ('Starter', backref='selection', lazy=True)
+#    main= db.relationship('Main_Dish', backref='selection', lazy=True)
+#    salad= db.relationship('Salad', backref='selection', lazy=True)
+#    dessert= db.relationship('Dessert', backref='selection', lazy=True)
+    
+#    def __repr__(self):
+#        return "<Selection %r>" % self.name
+    
+#    def serialize(self):
+#        return {
+#            'id': self.id,
+#            'date': self.date,
+#            'starter': self.starter,
+#            'main': self.main,
+#            'salad': self.salad,
+#            'dessert': self.dessert
+#        }
