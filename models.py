@@ -5,12 +5,13 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 #TABLAS DE USUARIO
-class Roles(db.Model):
+class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
+    user = db.relationship('User', backref='role', lazy=True)
 
     def __repr__(self):
-        return "Roles %r" % self.name
+        return "Role %r" % self.name
 
     def serialize(self):
         return{
@@ -23,7 +24,8 @@ class User(db.Model):
     full_name = db.Column(db.String(50))
     email = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
-    roles_id =db.Column(db.Integer)
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id'),
+        nullable=False)
 
     def __repr__(self):
         return "User %r>" % self.email
@@ -33,8 +35,7 @@ class User(db.Model):
             "id": self.id,
             "full_name": self.full_name,
             "email": self.email,
-            "password": self.password,
-            "roles_id": self.roles_id
+            "role_id": self.role_id
         }
 
 #TABLAS DE MENÚ
