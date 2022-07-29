@@ -6,7 +6,7 @@ import re
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
-from models import db, Starter, Main_Dish, Salad, Dessert, User, Role
+from models import db, Starter, Main_Dish, Salad, Dessert, User, Role #, Selection
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
@@ -268,6 +268,17 @@ def delete_dessert(id):
     db.session.commit()
     return jsonify('El postre fue eliminado exitosamente')
 
+
+#CRUD SELECTION
+#@app.route ('/userselection', methods=['POST'])
+#def add_user_selection():
+#    selected_starter= Starter.query\
+#        .join(Starter, Starter.id == Selection.starter_id)\
+#        .add_columns(Starter.id, Starter.name, Starter.description)\
+#        .request.json.get(Starter.name, Starter.description)
+#    db.session.add(selected_starter)
+#    db.session.commit()
+#    return jsonify(selected_starter.serialize(), 200)    
 
 
 if __name__ == '__main__':
