@@ -6,7 +6,7 @@ import re
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
-from models import db, Starter, Main_Dish, Salad, Dessert, User, Roles, Selection
+from models import db, Starter, Main_Dish, Salad, Dessert, User, Role #, Selection
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
@@ -49,9 +49,10 @@ def create_user():
             if password != '' and re.search(password_reg, password):
                 user = User()
                 user.email = email
-                password_hash = bcrypt.generate_password_hash(password)
+                password_hash = bcrypt.generate_password_hash(password.encode('utf-8')).decode('utf-8')
                 user.password = password_hash
                 user.full_name = request.json.get("full_name")
+                user.role_id = 1
 
                 db.session.add(user)
                 db.session.commit()
@@ -67,6 +68,49 @@ def create_user():
         return jsonify({
                     "msg": 'Wrong email format'
                 }), 400
+
+@app.route('/login', methods=["POST"])
+def login():
+    email = request.json.get('email')
+    password = request.json.get('password')
+    if password == '' and email == '':
+        return jsonify({
+            "msg": 'Email or password empty'
+        }), 400
+    else:
+        user = User.query.filter_by(email=email).first()
+        if user is not None:
+            check_password = bcrypt.check_password_hash(user.password, password)
+            if check_password:
+                access_token = create_access_token(identity=email)
+                
+                if user.role_id == 1:
+                    return jsonify({
+                        "user": user.serialize(),
+                        "access_token":access_token,
+                        
+                    }), 200
+                else:
+                    return jsonify({
+                        "user": user.serialize(),
+                        "access_token":access_token,
+                        "role_id": 2
+                        
+                    }), 200
+            else:
+                return jsonify({
+                    "msg": 'email or password is invalid'
+                }), 400
+        else:
+            return jsonify({
+                "msg": 'user not found, go to register'
+            }), 400
+
+@app.route('/me', methods=["GET"])
+@jwt_required()
+def me():
+    user = get_jwt_identity()
+    return jsonify(user), 200
 
 #CRUD STARTER
 @app.route ('/starter', methods=['POST'])

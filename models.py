@@ -7,12 +7,13 @@ from sqlalchemy import ForeignKey, true
 db = SQLAlchemy()
 
 #TABLAS DE USUARIO
-class Roles(db.Model):
+class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
+    user = db.relationship('User', backref='role', lazy=True)
 
     def __repr__(self):
-        return "Roles %r" % self.name
+        return "Role %r" % self.name
 
     def serialize(self):
         return{
@@ -26,7 +27,8 @@ class User(db.Model):
     full_name = db.Column(db.String(50))
     email = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
-    roles_id =db.Column(db.Integer)
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id'),
+        nullable=False)
 
     def __repr__(self):
         return "User %r>" % self.email
@@ -36,17 +38,16 @@ class User(db.Model):
             "id": self.id,
             "full_name": self.full_name,
             "email": self.email,
-            "password": self.password,
-            "roles_id": self.roles_id
+            "role_id": self.role_id
         }
 
 #TABLAS DE MENÚ
 class Starter(db.Model):
     id = db.Column (db.Integer, primary_key=True)
-    date= db.Column(db.DateTime, nullable=True)
+    #date= db.Column(db.DateTime, nullable=True)
     name = db.Column (db.String(100), nullable= False)
     description = db.Column (db.String(300), nullable= False)
-    selection = db.relationship ('Selection', backref='starter', primaryjoin='starter.id==selection.starter_id', lazy=True)
+    #selection = db.relationship ('Selection', backref='starter', primaryjoin='starter.id==selection.starter_id', lazy=True)
 
     def __repr__(self):
         return "<Starter %r>" % self.starter_name
@@ -61,10 +62,10 @@ class Starter(db.Model):
 class Main_Dish(db.Model):
     __tablename__= 'main'
     id = db.Column (db.Integer, primary_key=True)
-    date= db.Column(db.DateTime, nullable=True)
+    #date= db.Column(db.DateTime, nullable=True)
     name = db.Column (db.String(100), nullable= False)
     description = db.Column (db.String(300), nullable= False)
-    selection = db.relationship ('Selection', backref='main', lazy=True)
+    #selection = db.relationship ('Selection', backref='main', lazy=True)
 
     def __repr__(self):
         return "<Main_Dish %r>" % self.name
@@ -78,10 +79,10 @@ class Main_Dish(db.Model):
 
 class Salad(db.Model):
     id = db.Column (db.Integer, primary_key=True)
-    date= db.Column(db.DateTime, nullable=True)
+    #date= db.Column(db.DateTime, nullable=True)
     name = db.Column (db.String(100), nullable= False)
     description = db.Column (db.String(300), nullable= False)
-    selection = db.relationship ('Selection', backref='salad', lazy=True)
+    #selection = db.relationship ('Selection', backref='salad', lazy=True)
 
     def __repr__(self):
         return "<Salad %r>" % self.name
@@ -95,10 +96,10 @@ class Salad(db.Model):
 
 class Dessert(db.Model):
     id = db.Column (db.Integer, primary_key=True)
-    date= db.Column(db.DateTime, nullable=True)
+    #date= db.Column(db.DateTime, nullable=True)
     name = db.Column (db.String(100), nullable= False)
     description = db.Column (db.String(300), nullable= False)
-    selection = db.relationship ('Selection', backref='dessert', lazy=True)
+    #selection = db.relationship ('Selection', backref='dessert', lazy=True)
 
     def __repr__(self):
         return "<Dessert %r>" % self.name
@@ -110,23 +111,23 @@ class Dessert(db.Model):
             "description": self.description
         }
     
-class Selection(db.Model):
-    id = db.Column (db.Integer, primary_key=True)
-    #date = db.Column (db.DateTime)
-    starter_id= db.Column (db.Integer, db.ForeignKey('starter.id'), nullable=False)
-    main_id= db.Column (db.Integer, db.ForeignKey('main.id'), nullable=True)
-    salad_id= db.Column (db.Integer, db.ForeignKey('salad.id'), nullable=True)
-    dessert_id= db.Column (db.Integer, db.ForeignKey('dessert.id'), nullable=True)
+#class Selection(db.Model):
+#    id = db.Column (db.Integer, primary_key=True)
+#    date = db.Column (db.DateTime)
+#    starter_id= db.Column (db.Integer, db.ForeignKey('starter.id'), nullable=False)
+#    main_id= db.Column (db.Integer, db.ForeignKey('main.id'), nullable=True)
+#    salad_id= db.Column (db.Integer, db.ForeignKey('salad.id'), nullable=True)
+#    dessert_id= db.Column (db.Integer, db.ForeignKey('dessert.id'), nullable=True)
     
-    def __repr__(self):
-        return "<Selection %r>" % self.name
+#    def __repr__(self):
+#        return "<Selection %r>" % self.name
     
-    def serialize(self):
-        return {
-            'id': self.id,
-            #'date': self.date,
-            'starter_id': self.starter_id,
-            'main_id': self.main_id,
-            'salad_id': self.salad_id,
-            'dessert_id': self.dessert_id
-         }
+#    def serialize(self):
+#        return {
+#            'id': self.id,
+#            'date': self.date,
+#            'starter_id': self.starter_id,
+        #     'main_id': self.main_id,
+        #     'salad_id': self.salad_id,
+        #     'dessert_id': self.dessert_id
+        #  }
