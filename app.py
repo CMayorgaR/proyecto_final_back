@@ -3,10 +3,11 @@ import email
 import json
 import os
 import re
+import datetime
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
-from models import db, Starter, Main_Dish, Salad, Dessert, User, Role #, Selection
+from models import db, Starter, Main_Dish, Salad, Dessert, User, Role, Selection
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
@@ -270,15 +271,20 @@ def delete_dessert(id):
 
 
 #CRUD SELECTION
-#@app.route ('/userselection', methods=['POST'])
-#def add_user_selection():
-#    selected_starter= Starter.query\
-#        .join(Starter, Starter.id == Selection.starter_id)\
-#        .add_columns(Starter.id, Starter.name, Starter.description)\
-#        .request.json.get(Starter.name, Starter.description)
-#    db.session.add(selected_starter)
-#    db.session.commit()
-#    return jsonify(selected_starter.serialize(), 200)    
+@app.route ('/userselection', methods=['POST'])
+def add_user_selection():
+    selection = Selection()
+    selection.date = datetime.datetime(2022,7,10)
+    selection.user_id= request.json.get("user_id")
+    selection.starter_id= request.json.get("starter_id")
+    selection.main_id= request.json.get("main_id")
+    selection.salad_id= request.json.get("salad_id")
+    selection.dessert_id= request.json.get("dessert_id")
+    db.session.add(selection)
+    db.session.commit()
+    return jsonify(selection.serialize(), 200)    
+
+
 
 
 if __name__ == '__main__':
