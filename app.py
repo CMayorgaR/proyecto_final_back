@@ -58,7 +58,7 @@ def create_user():
                 db.session.commit()
 
                 return jsonify({
-                    "msg": "success user created"
+                    "msg": "success user created",
                 }), 200
             else:
                 return jsonify({
@@ -120,6 +120,7 @@ def new_starter():
         starter.name = request.json.get("name")
         starter.description = request.json.get("description")
         starter.date = request.json.get("date")
+
         db.session.add(starter)
         db.session.commit()
         return jsonify(starter.serialize()), 200
