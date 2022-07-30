@@ -44,7 +44,7 @@ class User(db.Model):
 #TABLAS DE MENÚ
 class Starter(db.Model):
     id = db.Column (db.Integer, primary_key=True)
-    #date= db.Column(db.DateTime, nullable=True)
+    date= db.Column(db.String, nullable=True)
     name = db.Column (db.String(100), nullable= False)
     description = db.Column (db.String(300), nullable= False)
     #selection = db.relationship ('Selection', backref='starter', primaryjoin='starter.id==selection.starter_id', lazy=True)
@@ -56,13 +56,14 @@ class Starter(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "description": self.description
+            "description": self.description,
+            "date":self.date
             }
 
 class Main_Dish(db.Model):
     __tablename__= 'main'
     id = db.Column (db.Integer, primary_key=True)
-    #date= db.Column(db.DateTime, nullable=True)
+    date= db.Column(db.String, nullable=True)
     name = db.Column (db.String(100), nullable= False)
     description = db.Column (db.String(300), nullable= False)
     #selection = db.relationship ('Selection', backref='main', lazy=True)
@@ -74,12 +75,13 @@ class Main_Dish(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "description": self.description
+            "description": self.description,
+            "date":self.date
         }
 
 class Salad(db.Model):
     id = db.Column (db.Integer, primary_key=True)
-    #date= db.Column(db.DateTime, nullable=True)
+    date= db.Column(db.String, nullable=True)
     name = db.Column (db.String(100), nullable= False)
     description = db.Column (db.String(300), nullable= False)
     #selection = db.relationship ('Selection', backref='salad', lazy=True)
@@ -91,12 +93,13 @@ class Salad(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "description": self.description
+            "description": self.description,
+            "date":self.date
         }
 
 class Dessert(db.Model):
     id = db.Column (db.Integer, primary_key=True)
-    #date= db.Column(db.DateTime, nullable=True)
+    date= db.Column(db.String, nullable=True)
     name = db.Column (db.String(100), nullable= False)
     description = db.Column (db.String(300), nullable= False)
     #selection = db.relationship ('Selection', backref='dessert', lazy=True)
@@ -108,7 +111,8 @@ class Dessert(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "description": self.description
+            "description": self.description,
+            "date":self.date
         }
     
 #class Selection(db.Model):
