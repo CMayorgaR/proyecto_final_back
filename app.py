@@ -58,7 +58,7 @@ def create_user():
                 db.session.commit()
 
                 return jsonify({
-                    "msg": "success user created"
+                    "msg": "success user created",
                 }), 200
             else:
                 return jsonify({
@@ -119,6 +119,8 @@ def new_starter():
         starter= Starter()
         starter.name = request.json.get("name")
         starter.description = request.json.get("description")
+        starter.date = request.json.get("date")
+
         db.session.add(starter)
         db.session.commit()
         return jsonify(starter.serialize()), 200
@@ -158,6 +160,7 @@ def new_main():
         main= Main_Dish()
         main.name = request.json.get("name")
         main.description = request.json.get("description")
+        main.date = request.json.get("date")
         db.session.add(main)
         db.session.commit()
         return jsonify(main.serialize()), 200
@@ -197,6 +200,7 @@ def new_salad():
         salad= Salad()
         salad.name = request.json.get("name")
         salad.description = request.json.get("description")
+        salad.date = request.json.get("date")
         db.session.add(salad)
         db.session.commit()
         return jsonify(salad.serialize()), 200
@@ -236,6 +240,7 @@ def new_dessert():
         dessert= Dessert()
         dessert.name = request.json.get("name")
         dessert.description = request.json.get("description")
+        dessert.date = request.json.get("date")
         db.session.add(dessert)
         db.session.commit()
         return jsonify(dessert.serialize()), 200
