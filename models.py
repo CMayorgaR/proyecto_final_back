@@ -114,7 +114,7 @@ class Dessert(db.Model):
     
 class Selection(db.Model):
     id = db.Column (db.Integer, primary_key=True)
-    date = db.Column (db.DateTime)
+    date = db.Column (db.String(50), nullable=True)
     user_id = db.Column (db.Integer, db.ForeignKey('user.id'), nullable=True)
     starter_id= db.Column (db.Integer, db.ForeignKey('starter.id'), nullable=True)
     main_id= db.Column (db.Integer, db.ForeignKey('main.id'), nullable=True)

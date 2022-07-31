@@ -274,7 +274,7 @@ def delete_dessert(id):
 @app.route ('/userselection', methods=['POST'])
 def add_user_selection():
     selection = Selection()
-    selection.date = datetime.datetime(2022,7,10)
+    selection.date = request.json.get("date")
     selection.user_id= request.json.get("user_id")
     selection.starter_id= request.json.get("starter_id")
     selection.main_id= request.json.get("main_id")
@@ -282,9 +282,19 @@ def add_user_selection():
     selection.dessert_id= request.json.get("dessert_id")
     db.session.add(selection)
     db.session.commit()
-    return jsonify(selection.serialize(), 200)    
+    return jsonify(selection.serialize(), 200)  
 
+@app.route ('/userselection/<int:id>', methods=['DELETE'])
+def delete_userSelection(id):
+    selection= Selection.query.get(id)
+    db.session.delete(selection)
+    db.session.commit()
+    return jsonify('El menú seleccionado fue eliminado exitosamente')  
 
+@app.route ('/userselection/<int:id>', methods = ['GET']) #One selection
+def one_selection(id):
+    selection = Selection.query.get(id)
+    return jsonify(selection.serialize()), 200
 
 
 if __name__ == '__main__':
